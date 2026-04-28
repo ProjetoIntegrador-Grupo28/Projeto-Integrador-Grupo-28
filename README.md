@@ -22,7 +22,7 @@ Identificar quais fatores (como classe, idade e sexo) foram determinantes para a
 | **Vitor + Isabella/Pedro + Karla/Matheus + Natália** | Dashboard Streamlit  | 05-05-2026 |
 | **Vitor** | Publicação no Streamlit Cloud  | 06/10-05-2026 |
 | **Todos os integrantes** | Testes do streamlit | 06/10-05-2026 |
-| **Karla, Emerson, Pedro e Natália** | Revisão final e atualização do README | -16/03/2026 |
+| **Karla, Emerson, Pedro e Natália** | Revisão final e atualização do README | 16/05/2026 |
 
 ## 5. Base de Dados
 * **Fonte:** https://www.kaggle.com/datasets/dimplebathija/titanic-machine-learning-from-disaster
