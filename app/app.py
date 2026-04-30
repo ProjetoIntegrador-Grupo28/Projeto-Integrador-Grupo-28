@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 @st.cache_data
 def load_data():
-    caminho = BASE_DIR.parent / "Data/processed/titanic_cleaned.csv"
+    caminho = BASE_DIR.parent / "data/processed/titanic_cleaned.csv"
     return pd.read_csv(caminho)
 
 df = load_data()
