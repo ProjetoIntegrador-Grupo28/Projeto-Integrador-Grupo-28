@@ -14,7 +14,14 @@ BASE_DIR = Path(__file__).resolve().parent
 
 @st.cache_data
 def load_data():
-    caminho = BASE_DIR.parent / "data/processed/titanic_cleaned.csv"
+    # .parent sobe para a raiz, permitindo entrar em /data
+    caminho = BASE_DIR.parent / "data" / "processed" / "titanic_cleaned.csv"
+    
+    # Verifica se o arquivo existe antes de tentar ler
+    if not caminho.exists():
+        st.error(f"Arquivo não encontrado: {caminho}")
+        return pd.DataFrame()
+        
     return pd.read_csv(caminho)
 
 df = load_data()
