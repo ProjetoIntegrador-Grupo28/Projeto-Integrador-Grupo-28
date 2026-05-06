@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from charts import plot_sobrevivencia_titulo, plot_viajava_sozinho
 
 # Configuração da página
 st.set_page_config(
@@ -98,3 +99,17 @@ with col3:
 
 with col4:
     st.metric("Sobrevivência Feminina", f"{taxa_feminina:.1f}%")
+
+# graficos 4-6
+st.divider() 
+st.subheader("Análise Social e Familiar")
+
+col_graf1, col_graf2 = st.columns(2)
+
+with col_graf1:
+    fig_titulo = plot_sobrevivencia_titulo(df_filtrado)
+    st.plotly_chart(fig_titulo, use_container_width=True)
+
+with col_graf2:
+    fig_sozinho = plot_viajava_sozinho(df_filtrado)
+    st.plotly_chart(fig_sozinho, use_container_width=True)
