@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-from charts import plot_sobrevivencia_titulo, plot_viajava_sozinho
+from charts import plot_sobrevivencia_titulo, plot_viajava_sozinho, plot_sobrevivencia_familia, plot_sobrevivencia_porto
 
 # Configuração da página
 st.set_page_config(
@@ -26,6 +26,7 @@ def load_data():
     return pd.read_csv(caminho)
 
 df = load_data()
+
 
 # Criar a sidebar (estrutura)
 st.sidebar.title("Filtros")
@@ -113,3 +114,18 @@ with col_graf1:
 with col_graf2:
     fig_sozinho = plot_viajava_sozinho(df_filtrado)
     st.plotly_chart(fig_sozinho, use_container_width=True)
+
+st.divider()
+st.subheader("Análise de Família e Embarque")
+
+# Cria uma nova linha com duas colunas
+col_graf3, col_graf4 = st.columns(2)
+
+#graficos 5-7
+with col_graf3:
+    fig_familia = plot_sobrevivencia_familia(df_filtrado)
+    st.plotly_chart(fig_familia, use_container_width=True)
+
+with col_graf4:
+    fig_porto = plot_sobrevivencia_porto(df_filtrado)
+    st.plotly_chart(fig_porto, use_container_width=True)   

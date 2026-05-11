@@ -75,3 +75,73 @@ def plot_viajava_sozinho(df: pd.DataFrame):
     )
     
     return fig
+# graficos 5-7
+def plot_sobrevivencia_familia(df: pd.DataFrame):
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+
+    # Como a equipe já criou a coluna "tamanho_familia" no ETL, 
+    # não precisamos somar "irmaos_conjuges" e "pais_filhos" aqui.
+    # Vamos usar a coluna que já existe direto!
+    
+    # Agrupa e calcula a média de sobrevivência
+    sobrevivencia_familia = df.groupby("tamanho_familia")["sobreviveu"].mean().reset_index()
+    # Multiplica por 100 para ficar em porcentagem
+    sobrevivencia_familia["sobreviveu"] = sobrevivencia_familia["sobreviveu"] * 100
+
+    # Cria o gráfico de barras com Plotly
+    fig = px.bar(
+        sobrevivencia_familia, 
+        x="tamanho_familia", 
+        y="sobreviveu",
+        text_auto='.1f' # Mostra o número em cima da barra
+    )
+    
+    fig.update_layout(
+        title=dict(text="<b>Taxa de Sobrevivência por Tamanho da Família</b>", font=dict(size=16)),
+        xaxis_title="Tamanho da Família",
+        yaxis_title="Taxa de Sobrevivência (%)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+    return fig
+
+
+def plot_sobrevivencia_porto(df: pd.DataFrame):
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+
+    df_plot = df.copy()
+    
+    # Usando o nome correto da coluna que você encontrou: "porto_embarque"
+    df_plot["nome_porto"] = df_plot["porto_embarque"].replace({
+        "C": "Cherbourg", "Q": "Queenstown", "S": "Southampton"
+    })
+    
+    # Agrupa e calcula a média
+    sobrevivencia_porto = df_plot.groupby("nome_porto")["sobreviveu"].mean().reset_index()
+    sobrevivencia_porto["sobreviveu"] = sobrevivencia_porto["sobreviveu"] * 100
+
+    fig = px.bar(
+        sobrevivencia_porto, 
+        x="nome_porto", 
+        y="sobreviveu",
+        color="nome_porto", # Dá uma cor diferente para cada porto
+        text_auto='.1f'
+    )
+    
+    fig.update_layout(
+        title=dict(text="<b>Taxa de Sobrevivência por Porto de Embarque</b>", font=dict(size=16)),
+        xaxis_title="Porto de Embarque",
+        yaxis_title="Taxa de Sobrevivência (%)",
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+    return fig
