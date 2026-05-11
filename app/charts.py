@@ -82,10 +82,6 @@ def plot_sobrevivencia_familia(df: pd.DataFrame):
         fig = go.Figure()
         fig.add_annotation(text="Sem dados", showarrow=False)
         return fig
-
-    # Como a equipe já criou a coluna "tamanho_familia" no ETL, 
-    # não precisamos somar "irmaos_conjuges" e "pais_filhos" aqui.
-    # Vamos usar a coluna que já existe direto!
     
     # Agrupa e calcula a média de sobrevivência
     sobrevivencia_familia = df.groupby("tamanho_familia")["sobreviveu"].mean().reset_index()
@@ -97,7 +93,7 @@ def plot_sobrevivencia_familia(df: pd.DataFrame):
         sobrevivencia_familia, 
         x="tamanho_familia", 
         y="sobreviveu",
-        text_auto='.1f' # Mostra o número em cima da barra
+        text_auto='.1f' 
     )
     
     fig.update_layout(
@@ -119,7 +115,6 @@ def plot_sobrevivencia_porto(df: pd.DataFrame):
 
     df_plot = df.copy()
     
-    # Usando o nome correto da coluna que você encontrou: "porto_embarque"
     df_plot["nome_porto"] = df_plot["porto_embarque"].replace({
         "C": "Cherbourg", "Q": "Queenstown", "S": "Southampton"
     })
