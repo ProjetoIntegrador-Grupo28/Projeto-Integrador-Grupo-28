@@ -12,22 +12,58 @@
 * **Emerson** - [(https://github.com/emerson-maker)]
 * **Pedro** - [(https://github.com/pedrovilaca97)]
 
-## 3. Objetivo da Análise. 
+## 3. Acesso ao Dashboard 
+
+## 3.1 (Online)
+
+O painel interativo está disponível na nuvem para acesso imediato. Para explorar os dados e gráficos sem necessidade de instalação, utilize o link abaixo:
+
+- **[Clique aqui para acessar o Dashboard do Titanic no Streamlit](COLOQUE_O_LINK_DO_STREAMLIT_AQUI)**
+
+## 3.2 Como executar a aplicação localmente
+
+Para rodar este projeto na sua máquina, certifique-se de ter o Python instalado. Depois, siga as etapas abaixo no seu terminal:
+
+- **Clone o repositório e entre na pasta do projeto:**
+  ```bash
+  git clone [https://github.com/ProjetoIntegrador-Grupo28/Projeto-Integrador-Grupo-28.git](https://github.com/ProjetoIntegrador-Grupo28/Projeto-Integrador-Grupo-28.git)
+  cd Projeto-Integrador-Grupo-28
+
+- **Crie o ambiente virtual (venv):**
+  Isso garante que o projeto rode em um ambiente isolado.
+  ```bash
+  python -m venv venv
+
+**Ative o ambiente virtual:**
+- Se estiver usando Windows (PowerShell):
+ .\venv\Scripts\Activate.ps1
+
+- Se estiver usando Mac ou Linux:
+    ```bash
+    source venv/bin/activate
+
+- **Instale as dependências do projeto**
+Com o ambiente ativado, instale as bibliotecas listadas no arquivo de requisitos:
+- pip install -r requirements.txt
+
+- **Execute o Dashboard:**
+  Inicie a aplicação utilizando o Streamlit:
+  ```bash
+  streamlit run APP/app.py
+
+## 4. Objetivo da Análise. 
 Identificar quais fatores (como classe, idade e sexo) foram determinantes para a sobrevivência no naufrágio. A base utilizada é a "Titanic - Machine Learning from Disaster" do Kaggle.
 
-## 4. Planejamento das Tarefas (Cronograma)
+## 5. Planejamento das Tarefas (Cronograma)
 | Integrante | Atividade | Prazo | 
 | :--- | :--- | :--- |
-| **Karla e Vitor** | Criação e estruturação do repositório no GitHub | 01-03/03/2026 |
-| **Natália e Vitor** | Escolha do dataset no Kaggle | 05-08/03/2026 |
-| **Vitor, Pedro e Isabella** | Redação da seção 'Tema, contexto e objetivo' no README | 10-13/03/2026 |
-| **Matheus e Natália** | Planejamento das transformações de ETL | 13-16/03/2026 |
-| **isabella e Pedro** | Definição das métricas, KPIs e visualisações do dashboard | 13-16/03/2026 |
-| **Pedro, Karla e Emerson** | Revisão cruzada do conteúdo técnico e textual | 17-18/03/2026 |
-| **Matheus, Emerson e Natália** | Ajustes finais, conferência de links, padronização do README | 18-20/03/2026 |
-| **Vitor** | Entrega Oficial: envio do link do repositório | 20-23/03/2026 |
+| **Matheus, Natália e Emerson** | ETL e processamento de dados | 24-04-2026 |
+| **Vitor + Isabella/Pedro + Karla/Matheus + Natália** | Dashboard Streamlit  | 05-05-2026 |
+| **Vitor** | Publicação no Streamlit Cloud  | 06/10-05-2026 |
+| **Todos os integrantes** | Testes do streamlit | 06/10-05-2026 |
+| **Karla, Emerson, Pedro e Natália** | Revisão final e atualização do README | 16/05/2026 |
 
-## 5. Base de Dados
+## 6. Base de Dados
 * **Fonte:** https://www.kaggle.com/datasets/dimplebathija/titanic-machine-learning-from-disaster
 * **Contexto:** Titanic: Machine Learning from Disaster
 
@@ -47,9 +83,9 @@ A análise desses dados permite identificar padrões importantes relacionados à
 
 Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais e competições de ciência de dados, pois permite aplicar diversas técnicas como análise exploratória de dados, limpeza de dados, engenharia de atributos e construção de modelos preditivos. Além de servir como introdução prática ao aprendizado de máquina, ele também ajuda a compreender como os dados podem revelar padrões e apoiar a tomada de decisões baseada em evidências.
 
-## 6. Transformações Planejadas (Processamento com Pandas)
+## 7. Transformações Planejadas (Processamento com Pandas)
 
-### 6.1 Padronização e Limpeza de Dados
+### 7.1 Padronização e Limpeza de Dados
 
 | Ação | Descrição |
 | :--- | :--- |
@@ -58,7 +94,7 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 6.2 Tratamento de Dados Ausentes (Data Imputation)
+### 7.2 Tratamento de Dados Ausentes (Data Imputation)
 
 | Coluna | Estratégia | Justificativa |
 | :--- | :--- | :--- |
@@ -68,7 +104,7 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 6.3 Engenharia de Variáveis (Feature Engineering)
+### 7.3 Engenharia de Variáveis (Feature Engineering)
 
 > Novas métricas que não existem no dataset original, mas que são cruciais para o Dashboard.
 
@@ -80,7 +116,7 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 6.4 Normalização e Agregações
+### 7.4 Normalização e Agregações
 
 | Transformação | Detalhamento |
 | :--- | :--- |
@@ -89,16 +125,16 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 6.5 Geração da Base Final
+### 7.5 Geração da Base Final
 ```
 /data/processed/titanic_cleaned.csv
 ```
 
 > O arquivo final será a fonte de dados única e otimizada utilizada pelo Dashboard, consolidando todas as transformações acima.
 
-## 7. Ideia Inicial do Dashboard (Métricas e Visualizações)
+## 8. Ideia Inicial do Dashboard (Métricas e Visualizações)
 
-### 7.1 Métricas Gerais (KPIs)
+### 8.1 Métricas Gerais (KPIs)
 
 | Métrica | Descrição |
 | :--- | :--- |
@@ -109,7 +145,7 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 7.2 Visualizações Planejadas
+### 8.2 Visualizações Planejadas
 
 | # | Visualização | Tipo | Variável Utilizada | Objetivo |
 | :---: | :--- | :---: | :--- | :--- |
@@ -123,7 +159,7 @@ Dessa forma, o dataset Titanic é amplamente utilizado em projetos educacionais 
 
 ---
 
-### 7.3 Filtros Interativos Previstos
+### 8.3 Filtros Interativos Previstos
 
 | Filtro | Opções |
 | :--- | :--- |
