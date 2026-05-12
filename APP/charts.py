@@ -1,3 +1,4 @@
+
 """
 charts.py – Visualizações 1, 2 e 3 do Dashboard Titanic (Grupo 28)
 Responsáveis: Pedro, Karla
@@ -11,16 +12,17 @@ Cada função recebe o DataFrame já filtrado pela sidebar e retorna
 uma figura Plotly pronta para ser exibida com st.plotly_chart().
 """
 
-import plotly.graph_objects as go
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 
 # ── Paleta e tipografia coerentes com o tema do projeto ──────────────────────
 CORES = {
     "sobreviveu":    "#4A90D9",   # azul oceano
     "nao_sobreviveu": "#C0392B",  # vermelho âncora
     "fundo":         "rgba(0,0,0,0)",
-    "texto":         "#2C3E50",
-    "grade":         "rgba(44,62,80,0.08)",
+    "texto":         "#E0E0E0",   
+    "grade":         "rgba(255,255,255,0.1)",
 }
 
 LAYOUT_BASE = dict(
@@ -108,7 +110,7 @@ def plot_sobrevivencia_classe(df: pd.DataFrame) -> go.Figure:
             yref="paper",
             text=f"<b>{taxa}%</b> taxa",
             showarrow=False,
-            yshift=-28,
+            yshift=-35,
             font=dict(size=11, color=CORES["texto"]),
         )
 
@@ -122,7 +124,7 @@ def plot_sobrevivencia_classe(df: pd.DataFrame) -> go.Figure:
         barmode="group",
         bargap=0.25,
         bargroupgap=0.08,
-        xaxis=dict(title="Classe", showgrid=False),
+        xaxis=dict(title="", showgrid=False),
         yaxis=dict(
             title="Nº de Passageiros",
             gridcolor=CORES["grade"],
@@ -158,8 +160,8 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
 
     # Labels e cores por gênero
     cores_genero = {
-        "feminino":   ["#4A90D9", "#C0D8F0"],
-        "masculino":  ["#C0392B", "#F0BEBE"],
+        "female":   ["#4A90D9", "#C0D8F0"],
+        "male":  ["#C0392B", "#F0BEBE"],
     }
 
     fig = go.Figure()
@@ -167,7 +169,7 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
     for _, row in agg.iterrows():
         genero  = row["sexo"]
         c_vivo, c_morto = cores_genero.get(genero, ["#888", "#ccc"])
-        label   = "Feminino" if genero == "feminino" else "Masculino"
+        label   = "Feminino" if genero == "female" else "Masculino"
 
         fig.add_trace(go.Pie(
             name=label,
@@ -178,7 +180,7 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
             textinfo="label+percent",
             textfont=dict(size=12),
             domain={
-                "x": [0, 0.46] if genero == "feminino" else [0.54, 1],
+                "x": [0, 0.46] if genero == "female" else [0.54, 1],
                 "y": [0, 1],
             },
             title=dict(
@@ -297,4 +299,144 @@ def _grafico_vazio(mensagem: str) -> go.Figure:
         font=dict(size=15, color="#888"),
     )
     fig.update_layout(**LAYOUT_BASE)
+    return fig
+
+# -------------------------------------------------------------------------
+# VISUALIZAÇÃO 4: GRÁFICO DE BARRAS HORIZONTAIS (TÍTULO SOCIAL)
+# -------------------------------------------------------------------------
+def plot_sobrevivencia_titulo(df: pd.DataFrame):
+    
+    # TRAVA DE SEGURANÇA: 
+    # Verifica se a tabela está vazia, caso o usuário marque filtros que não combinam
+    # Se estiver vazia, retorna um gráfico em branco com a mensagem "Sem dados" p o aplicativo n quebrar
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+
+    df_plot = df.copy()
+    # Trocando os números 0 e 1 pelas palavras correspondentes
+    df_plot['sobreviveu'] = df_plot['sobreviveu'].map({0: 'Não sobreviveu', 1: 'Sobreviveu'})
+
+    # Agora usamos o df_plot no histograma no lugar do df
+    fig = px.histogram(
+        df_plot, 
+        y="titulo_social", 
+        color="sobreviveu", 
+        orientation='h', 
+        barmode='group'
+    )
+    
+    fig.update_layout(
+        title=dict(text="<b>Sobrevivência por Título Social</b>", font=dict(size=16)),
+        yaxis_title="Título Social",
+        xaxis_title="Quantidade de Passageiros",
+        paper_bgcolor="rgba(0,0,0,0)", 
+        plot_bgcolor="rgba(0,0,0,0)"   
+    )
+    
+    return fig
+
+# -------------------------------------------------------------------------
+# VISUALIZAÇÃO 6: GRÁFICO DE PIZZA / DONUT (VIAJAVA SOZINHO)
+# -------------------------------------------------------------------------
+def plot_viajava_sozinho(df: pd.DataFrame):
+    
+    # Mesma trava de segurança
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+
+    # PREPARANDO OS DADOS:
+    # Diferente do histograma, o gráfico de pizza precisa que a gente conte os dados antes.
+    # value_counts() conta quantos passageiros estavam sozinhos e quantos acompanhados.
+    # reset_index() transforma essa contagem solta em uma tabelinha organizada.
+    contagem_solo = df['viajava_sozinho'].value_counts().reset_index()
+    
+    # Renomeei as colunas 
+    contagem_solo.columns = ['viajava_sozinho', 'Quantidade']
+    
+    fig = px.pie(
+        contagem_solo, 
+        names='viajava_sozinho', 
+        values='Quantidade',     
+        hole=0.4                
+    )
+    
+    fig.update_traces(textinfo='percent+label')
+    
+    fig.update_layout(
+        title=dict(text="<b>Proporção: Viajava Sozinho?</b>", font=dict(size=16)),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+    
+    return fig
+# graficos 5-7
+def plot_sobrevivencia_familia(df: pd.DataFrame):
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+    
+    # Agrupa e calcula a média de sobrevivência
+    sobrevivencia_familia = df.groupby("tamanho_familia")["sobreviveu"].mean().reset_index()
+    # Multiplica por 100 para ficar em porcentagem
+    sobrevivencia_familia["sobreviveu"] = sobrevivencia_familia["sobreviveu"] * 100
+
+    # Cria o gráfico de barras com Plotly
+    fig = px.bar(
+        sobrevivencia_familia, 
+        x="tamanho_familia", 
+        y="sobreviveu",
+        text_auto='.1f' 
+    )
+    
+    fig.update_layout(
+        title=dict(text="<b>Taxa de Sobrevivência por Tamanho da Família</b>", font=dict(size=16)),
+        xaxis_title="Tamanho da Família",
+        yaxis_title="Taxa de Sobrevivência (%)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+    return fig
+
+
+def plot_sobrevivencia_porto(df: pd.DataFrame):
+    if df.empty:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        fig.add_annotation(text="Sem dados", showarrow=False)
+        return fig
+
+    df_plot = df.copy()
+    
+    df_plot["nome_porto"] = df_plot["porto_embarque"].replace({
+        "C": "Cherbourg", "Q": "Queenstown", "S": "Southampton"
+    })
+    
+    # Agrupa e calcula a média
+    sobrevivencia_porto = df_plot.groupby("nome_porto")["sobreviveu"].mean().reset_index()
+    sobrevivencia_porto["sobreviveu"] = sobrevivencia_porto["sobreviveu"] * 100
+
+    fig = px.bar(
+        sobrevivencia_porto, 
+        x="nome_porto", 
+        y="sobreviveu",
+        color="nome_porto", # Dá uma cor diferente para cada porto
+        text_auto='.1f'
+    )
+    
+    fig.update_layout(
+        title=dict(text="<b>Taxa de Sobrevivência por Porto de Embarque</b>", font=dict(size=16)),
+        xaxis_title="Porto de Embarque",
+        yaxis_title="Taxa de Sobrevivência (%)",
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
     return fig

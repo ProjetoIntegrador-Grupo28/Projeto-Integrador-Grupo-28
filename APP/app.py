@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+from charts import plot_sobrevivencia_classe, plot_sobrevivencia_genero, plot_sobrevivencia_faixa, plot_sobrevivencia_titulo, plot_viajava_sozinho, plot_sobrevivencia_familia, plot_sobrevivencia_porto
 
 # Configuração da página
 st.set_page_config(
@@ -25,6 +26,7 @@ def load_data():
     return pd.read_csv(caminho)
 
 df = load_data()
+
 
 # Criar a sidebar (estrutura)
 st.sidebar.title("Filtros")
@@ -98,3 +100,51 @@ with col3:
 
 with col4:
     st.metric("Sobrevivência Feminina", f"{taxa_feminina:.1f}%")
+
+st.subheader("Análise Geral")
+
+# Cria duas colunas para os gráficos 1 e 2
+col_graf_a, col_graf_b = st.columns(2)
+
+with col_graf_a:
+    fig_classe = plot_sobrevivencia_classe(df_filtrado)
+    st.plotly_chart(fig_classe, use_container_width=True)
+
+with col_graf_b:
+    fig_genero = plot_sobrevivencia_genero(df_filtrado)
+    st.plotly_chart(fig_genero, use_container_width=True)
+
+# O gráfico 3 (Faixa Etária)
+fig_faixa = plot_sobrevivencia_faixa(df_filtrado)
+st.plotly_chart(fig_faixa, use_container_width=True)
+
+st.divider() 
+
+# graficos 4-6
+st.divider() 
+st.subheader("Análise Social e Familiar")
+
+col_graf1, col_graf2 = st.columns(2)
+
+with col_graf1:
+    fig_titulo = plot_sobrevivencia_titulo(df_filtrado)
+    st.plotly_chart(fig_titulo, use_container_width=True)
+
+with col_graf2:
+    fig_sozinho = plot_viajava_sozinho(df_filtrado)
+    st.plotly_chart(fig_sozinho, use_container_width=True)
+
+st.divider()
+st.subheader("Análise de Família e Embarque")
+
+# Cria uma nova linha com duas colunas
+col_graf3, col_graf4 = st.columns(2)
+
+#graficos 5-7
+with col_graf3:
+    fig_familia = plot_sobrevivencia_familia(df_filtrado)
+    st.plotly_chart(fig_familia, use_container_width=True)
+
+with col_graf4:
+    fig_porto = plot_sobrevivencia_porto(df_filtrado)
+    st.plotly_chart(fig_porto, use_container_width=True)   
