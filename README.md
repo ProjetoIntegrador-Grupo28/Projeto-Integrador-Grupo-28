@@ -18,7 +18,7 @@
 
 O painel interativo está disponível na nuvem para acesso imediato. Para explorar os dados e gráficos sem necessidade de instalação, utilize o link abaixo:
 
-- **[Clique aqui para acessar o Dashboard do Titanic no Streamlit](COLOQUE_O_LINK_DO_STREAMLIT_AQUI)**
+- **[Clique aqui para acessar o Dashboard do Titanic no Streamlit]((https://projeto-integrador-grupo-28-tbrrsgulcckbmhbha5p3kq.streamlit.app/))**
 
 ## 3.2 Como executar a aplicação localmente
 
