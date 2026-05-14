@@ -100,7 +100,7 @@ taxa_sobrevivencia = df_filtrado['sobreviveu'].mean() * 100
 total_passageiros = len(df_filtrado)
 media_idade = df_filtrado['idade'].mean()
 
-df_feminino = df_filtrado[df_filtrado['sexo'] == 'female']
+df_feminino = df_filtrado[df_filtrado['sexo'] == 'feminino']
 taxa_feminina = df_feminino['sobreviveu'].mean() * 100 if len(df_feminino) > 0 else 0
 
 # Exibição dos KPIs
