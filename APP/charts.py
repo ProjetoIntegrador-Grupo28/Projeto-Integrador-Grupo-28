@@ -160,8 +160,8 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
 
     # Labels e cores por gênero
     cores_genero = {
-        "female":   ["#4A90D9", "#C0D8F0"],
-        "male":  ["#C0392B", "#F0BEBE"],
+        "feminino":   ["#4A90D9", "#C0D8F0"],
+        "masculino":  ["#C0392B", "#F0BEBE"],
     }
 
     fig = go.Figure()
@@ -169,7 +169,7 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
     for _, row in agg.iterrows():
         genero  = row["sexo"]
         c_vivo, c_morto = cores_genero.get(genero, ["#888", "#ccc"])
-        label   = "Feminino" if genero == "female" else "Masculino"
+        label   = genero
 
         fig.add_trace(go.Pie(
             name=label,
@@ -180,7 +180,7 @@ def plot_sobrevivencia_genero(df: pd.DataFrame) -> go.Figure:
             textinfo="label+percent",
             textfont=dict(size=12),
             domain={
-                "x": [0, 0.46] if genero == "female" else [0.54, 1],
+                "x": [0, 0.46] if genero == "feminino" else [0.54, 1],
                 "y": [0, 1],
             },
             title=dict(

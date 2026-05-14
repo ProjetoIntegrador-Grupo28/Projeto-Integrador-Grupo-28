@@ -25,7 +25,22 @@ def load_data():
         
     return pd.read_csv(caminho)
 
-df = load_data()
+df = load_data() 
+
+# Traduzindo o Gênero
+df["sexo"] = df["sexo"].replace({
+    "female": "feminino", 
+    "male": "masculino"
+})
+
+# Traduzindo os Títulos Sociais
+# (Verifique se a sua coluna se chama "titulo" ou "titulo_social" e ajuste se necessário)
+df["titulo_social"] = df["titulo_social"].replace({
+    "Mr": "Sr.",
+    "Mrs": "Sra.",
+    "Miss": "Srta.",
+    "Master": "Menino" # Master era o título inglês para crianças do sexo masculino
+})
 
 
 # Criar a sidebar (estrutura)
